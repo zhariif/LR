@@ -1,5 +1,5 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 import os
 
@@ -9,20 +9,16 @@ def load_objects():
     # Pastikan file ada di direktori yang sama
     base_dir = os.path.dirname(__file__)
     
-    with open(os.path.join(base_dir, 'lr_best.pkl'), 'rb') as f:
-        model = pickle.load(f)
-        
-    with open(os.path.join(base_dir, 'vec_terpilih.pkl'), 'rb') as f:
-        vectorizer = pickle.load(f)
-        
-    with open(os.path.join(base_dir, 'label_encoder.pkl'), 'rb') as f:
-        le = pickle.load(f)
+    model = joblib.load(os.path.join(base_dir, 'lr_best.pkl'))
+    vectorizer = joblib.load(os.path.join(base_dir, 'vec_terpilih.pkl'))
+    le = joblib.load(os.path.join(base_dir, 'label_encoder.pkl'))
         
     with open(os.path.join(base_dir, 'threshold.txt'), 'r') as f:
         threshold_text = f.read().strip().replace(',', '.')
         threshold = float(threshold_text)
         
     return model, vectorizer, le, threshold
+
 
 # Konfigurasi halaman Streamlit
 st.set_page_config(
